@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<project basedir="." default="build">
+
+	<property name="rootdir" value="${project.basedir}/" override="true" />
+	<property name="bindir" value="${rootdir}vendor/bin/" override="false" />
+	<property name="srcdir" value="${rootdir}src/" override="false" />
+
+	<target name="build" depends="prepare,lint,phpunit,phpcs,phpmd" />
+
+	<target name="prepare" depends="clean">
+		<mkdir dir="${rootdir}build/coverage/" />
+		<mkdir dir="${rootdir}build/logs/" />
+	</target>
+
+	<target name="clean">
+		<if>
+			<available file="${rootdir}build/" type="dir" />
+			<then>
+				<delete dir="${rootdir}build/" />
+			</then>
+		</if>
+	</target>
+
+	<target name="lint">
+		<phplint haltonfailure="true">
+			<fileset dir="${rootdir}">
+				<include name="src/" />
+				<include name="test/unit/" />
+			</fileset>
+		</phplint>
+	</target>
+
+	<target name="phpunit">
+		<exec executable="${bindir}phpunit" passthru="true">
+			<arg line="-c ${rootdir}phpunit.xml" />
+			<arg line="--log-junit ${rootdir}build/logs/junit.xml" />
+			<arg line="--coverage-clover ${rootdir}build/logs/clover.xml" />
+			<arg line="--coverage-html ${rootdir}build/coverage/" />
+			<arg line="--coverage-crap4j ${rootdir}build/logs/crap4j.xml" />
+		</exec>
+	</target>
+
+	<target name="phpcs">
+		<exec executable="${bindir}phpcs" passthru="true">
+			<arg line="-p" />
+			<arg line="--report=checkstyle" />
+			<arg line="--report-file=${rootdir}build/logs/checkstyle.xml" />
+		</exec>
+	</target>
+
+	<target name="phpmd">
+		<exec executable="${bindir}phpmd" passthru="true">
+			<arg line="${srcdir}" />
+			<arg line="xml" />
+			<arg line="${rootdir}phpmd.xml" />
+			<arg line="--reportfile ${rootdir}build/logs/pmd.xml" />
+		</exec>
+	</target>
+
+</project>
