@@ -4,22 +4,13 @@ namespace perf\SpamDetection;
 
 abstract class SpamEvaluationBase implements SpamEvaluationInterface
 {
-    private int $score;
-
-    /**
-     * @var SpamKeywordInterface[]
-     */
-    private array $matchedKeywords;
-
     /**
      * @param SpamKeywordInterface[] $matchedKeywords
      */
     public function __construct(
-        int $score,
-        array $matchedKeywords = []
+        private readonly int $score,
+        private readonly iterable $matchedKeywords = []
     ) {
-        $this->score           = $score;
-        $this->matchedKeywords = $matchedKeywords;
     }
 
     public function getScore(): int
@@ -27,10 +18,7 @@ abstract class SpamEvaluationBase implements SpamEvaluationInterface
         return $this->score;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getMatchedKeywords(): array
+    public function getMatchedKeywords(): iterable
     {
         return $this->matchedKeywords;
     }

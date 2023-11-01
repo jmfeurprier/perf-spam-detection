@@ -11,5 +11,5 @@ interface SpamEvaluationInterface
     /**
      * @return SpamKeywordInterface[]
      */
-    public function getMatchedKeywords(): array;
+    public function getMatchedKeywords(): iterable;
 }

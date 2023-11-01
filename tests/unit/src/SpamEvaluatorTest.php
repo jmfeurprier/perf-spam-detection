@@ -1,22 +1,21 @@
 <?php
 
-namespace perf\SpamDetection\SpamEvaluator;
+namespace perf\SpamDetection;
 
-use perf\SpamDetection\SpamEvaluationInterface;
-use perf\SpamDetection\SpamEvaluator;
-use perf\SpamDetection\SpamKeywordInterface;
-use perf\SpamDetection\SpamKeywordRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 class SpamEvaluatorTest extends TestCase
 {
-    private array $spamKeywords = [];
+    /**
+     * @var SpamKeywordInterface[]
+     */
+    private iterable $spamKeywords = [];
 
     private int $spamScoreThreshold;
 
     private SpamEvaluationInterface $evaluation;
 
-    public function testEvaluateWithEmptySpamKeywordRepository()
+    public function testEvaluateWithEmptySpamKeywordRepository(): void
     {
         $this->givenSpamScoreThreshold(123);
 
@@ -27,7 +26,7 @@ class SpamEvaluatorTest extends TestCase
         $this->thenMatchedSpamKeywordCount(0);
     }
 
-    public function testEvaluateWithOneMatchedSpamKeywordBelowThreshold()
+    public function testEvaluateWithOneMatchedSpamKeywordBelowThreshold(): void
     {
         $this->givenSpamKeyword('foo', 100);
         $this->givenSpamScoreThreshold(123);
@@ -39,7 +38,7 @@ class SpamEvaluatorTest extends TestCase
         $this->thenMatchedSpamKeywordCount(1);
     }
 
-    public function testEvaluateWithOneMatchedSpamKeywordAboveThreshold()
+    public function testEvaluateWithOneMatchedSpamKeywordAboveThreshold(): void
     {
         $this->givenSpamKeyword('foo', 200);
         $this->givenSpamScoreThreshold(123);
@@ -51,7 +50,7 @@ class SpamEvaluatorTest extends TestCase
         $this->thenMatchedSpamKeywordCount(1);
     }
 
-    public function testEvaluateWithBothMatchedAndUnmatchedSpamKeywords()
+    public function testEvaluateWithBothMatchedAndUnmatchedSpamKeywords(): void
     {
         $this->givenSpamKeyword('foo', 100);
         $this->givenSpamKeyword('bar', 200);

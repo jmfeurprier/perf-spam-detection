@@ -7,5 +7,5 @@ interface SpamKeywordRepositoryInterface
     /**
      * @return SpamKeywordInterface[]
      */
-    public function getSpamKeywords(): array;
+    public function getSpamKeywords(): iterable;
 }

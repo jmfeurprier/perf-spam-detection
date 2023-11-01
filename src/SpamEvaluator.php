@@ -6,26 +6,20 @@ class SpamEvaluator implements SpamEvaluatorInterface
 {
     private const CHARSET_DEFAULT = 'UTF-8';
 
-    private SpamKeywordRepositoryInterface $spamKeywordRepository;
-
-    private int $spamScoreThreshold;
-
-    private string $charset;
-
     private string $string;
 
     private int $spamScore;
 
-    private array $matchedKeywords;
+    /**
+     * @var SpamKeywordInterface[]
+     */
+    private iterable $matchedKeywords;
 
     public function __construct(
-        SpamKeywordRepositoryInterface $spamKeywordRepository,
-        int $spamScoreThreshold,
-        string $charset = self::CHARSET_DEFAULT
+        private readonly SpamKeywordRepositoryInterface $spamKeywordRepository,
+        private readonly int $spamScoreThreshold,
+        private readonly string $charset = self::CHARSET_DEFAULT
     ) {
-        $this->spamKeywordRepository = $spamKeywordRepository;
-        $this->spamScoreThreshold    = $spamScoreThreshold;
-        $this->charset               = $charset;
     }
 
     public function evaluate(string $string): SpamEvaluationInterface
@@ -53,7 +47,7 @@ class SpamEvaluator implements SpamEvaluatorInterface
     /**
      * @return SpamKeywordInterface[]
      */
-    private function getSpamKeywords(): array
+    private function getSpamKeywords(): iterable
     {
         return $this->spamKeywordRepository->getSpamKeywords();
     }
